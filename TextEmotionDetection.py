@@ -8,6 +8,8 @@ from nltk.stem.porter import *
 from nltk.tokenize import RegexpTokenizer
 from gensim.models.doc2vec import Doc2Vec
 from collections import namedtuple
+from hpsklearn import HyperoptEstimator, extra_trees
+from hyperopt import tpe
 
 
 def readdata(train_set_path):
@@ -80,10 +82,27 @@ def extract_features(dataset_csv, feature_csv):
     return x, y
 
 
+def svm_model(x, y, size):
+    np.random.seed(13)
+    indices = np.random.permutation(len(x))
+    x_train = x[indices[:-size]]
+    y_train = y[indices[:-size]]
+    x_test = x[indices[-size:]]
+    y_test = y[indices[-size:]]
+    estim = HyperoptEstimator(classifier=extra_trees('my_clf'),
+                              preprocessing=[],
+                              algo=tpe.suggest,
+                              max_evals=10,
+                              trial_timeout=300)
+    estim.fit(x_train, y_train)
+    print(estim.score(x_test, y_test))
+    print(estim.best_model())
+
+
 if __name__ == '__main__':
-    x, y = extract_features('D:\\My Source Codes\\Projects-Python'
-                    '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\text_emotion.csv',
-                     'D:\\My Source Codes\\Projects-Python' \
-                     '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features.csv')
-    print(x.shape)
-    print(y.shape)
+    x_vectors, y_vectors = extract_features('D:\\My Source Codes\\Projects-Python'
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\text_emotion.csv',
+                                            'D:\\My Source Codes\\Projects-Python'
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features.csv')
+    test_size = int(0.2 * len(y_vectors))
+    svm_model(x_vectors, y_vectors, test_size)
