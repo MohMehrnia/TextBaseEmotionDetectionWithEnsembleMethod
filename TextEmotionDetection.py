@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-import io
+import csv
+import os.path
 from sklearn.preprocessing import LabelEncoder
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
@@ -54,18 +55,35 @@ def create_model(x, y):
     return features_vectors, model
 
 
-def extract_features(dataset_csv, fearture_csv):
-    print('Beginning Extract Features.......')
-    x, y = readdata(dataset_csv)
-    y = encode_label(y)
-    features_vactors, model = create_model(x, y)
-    features_vactors.to_csv(fearture_csv, mode='a', header=False, index=False)
-    print('Ending Extract Features.......')
-    return features_vactors
+def loaddata(filename,instancecol):
+    file_reader = csv.reader(open(filename,'r'),delimiter=',')
+    x = []
+    y = []
+    for row in file_reader:
+        x.append(row[0:instancecol])
+        y.append(row[-1])
+    return np.array(x[1:]).astype(np.float32), np.array(y[1:]).astype(np.int)
+
+
+def extract_features(dataset_csv, feature_csv):
+    if not os.path.exists(feature_csv):
+        print('Beginning Extract Features.......')
+        x, y = readdata(dataset_csv)
+        y = encode_label(y)
+        features_vactors, model = create_model(x, y)
+        features_vactors.to_csv(feature_csv, mode='a', header=False, index=False)
+        print('Ending Extract Features.......')
+    else:
+        print('Loading Last Features.......')
+        x, y = loaddata(feature_csv,100)
+        print('End Loading Last Features.......')
+    return x, y
 
 
 if __name__ == '__main__':
-    features = extract_features('D:\\My Source Codes\\Projects-Python'
+    x, y = extract_features('D:\\My Source Codes\\Projects-Python'
                     '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\text_emotion.csv',
                      'D:\\My Source Codes\\Projects-Python' \
                      '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features.csv')
+    print(x.shape)
+    print(y.shape)
