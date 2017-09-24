@@ -18,6 +18,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import VotingClassifier
+from dbn.tensorflow import SupervisedDBNClassification
 
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
@@ -214,6 +215,22 @@ def gaussian_nb_model_tpe():
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
     print(estim.best_model())
+
+
+def dbn():
+    estim = SupervisedDBNClassification(hidden_layers_structure=[256, 256],
+                                             learning_rate_rbm=0.05,
+                                             learning_rate=0.1,
+                                             n_epochs_rbm=10,
+                                             n_iter_backprop=100,
+                                             batch_size=32,
+                                             activation_function='relu',
+                                             dropout_p=0.2,
+                                             verbose=0)
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+    return 0
 
 
 def ensemble_group1_without_tpe():
@@ -440,23 +457,4 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    print("group1")
-    ensemble_group1_without_tpe()
-    ensemble_group1()
-
-    print("group2")
-    ensemble_group2_without_tpe()
-    ensemble_group2()
-
-    print("group3")
-    ensemble_group3_without_tpe()
-    ensemble_group3()
-
-    print("group4")
-    ensemble_group4_without_tpe()
-    ensemble_group4()
-
-    print("group5")
-    ensemble_group5_without_tpe()
-    ensemble_group5()
-
+    dbn()
