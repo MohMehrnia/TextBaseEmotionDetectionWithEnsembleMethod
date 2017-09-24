@@ -226,7 +226,8 @@ def rbm_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
 
 if __name__ == '__main__':
     x_vectors, y_vectors = extract_features('D:\\My Source Codes\\Projects-Python'
-                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\text_emotion_2class.csv',
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
+                                            'text_emotion_2class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features.csv')
     test_size = int(0.1 * len(y_vectors))
