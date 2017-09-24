@@ -299,6 +299,133 @@ def ensemble_group2():
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
+
+def ensemble_group3_without_tpe():
+    clf1 = DecisionTreeClassifier(random_state=0)
+    clf2 = GaussianNB()
+    clf3 = KNeighborsClassifier(n_neighbors=3)
+    clf4 = RandomForestClassifier(max_depth=2, random_state=0)
+    clf5 = svm.SVC(probability=True)
+    estim = VotingClassifier(estimators=[('KNN', clf3), ('RF', clf4), ('svm', clf5)],
+                             voting='soft', weights=[99.05, 99.09, 99.09])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def ensemble_group3():
+    clf1 = DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+                                    max_features='log2', max_leaf_nodes=None,
+                                    min_impurity_decrease=0.0, min_impurity_split=None,
+                                    min_samples_leaf=0.2, min_samples_split=0.5,
+                                    min_weight_fraction_leaf=0.0, presort=False, random_state=2,
+                                    splitter='random')
+    clf2 = GaussianNB(priors=None)
+    clf3 = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='euclidean',
+                               metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+                               weights='distance')
+    clf4 = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+                                    max_depth=None, max_features=0.6933792121972574,
+                                    max_leaf_nodes=None, min_impurity_decrease=0.0,
+                                    min_impurity_split=None, min_samples_leaf=18,
+                                    min_samples_split=2, min_weight_fraction_leaf=0.0,
+                                    n_estimators=2078, n_jobs=1, oob_score=False, random_state=1,
+                                    verbose=False, warm_start=False)
+    clf5 = svm.SVC(C=1045.8970220658168, cache_size=512, class_weight=None, coef0=0.0,
+                                  decision_function_shape='ovr', degree=1, gamma='auto', kernel='linear',
+                                  max_iter=14263117.0, random_state=3, shrinking=False, probability=True,
+                                  tol=5.3658140645203695e-05, verbose=False)
+    estim = VotingClassifier(estimators=[('KNN', clf3), ('RF', clf4), ('svm', clf5)],
+                            voting='soft', weights=[99.05, 99.09, 99.09])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def ensemble_group4_without_tpe():
+    clf1 = DecisionTreeClassifier(random_state=0)
+    clf2 = GaussianNB()
+    clf3 = KNeighborsClassifier(n_neighbors=3)
+    clf4 = RandomForestClassifier(max_depth=2, random_state=0)
+    clf5 = svm.SVC(probability=True)
+    estim = VotingClassifier(estimators=[('GNB', clf2), ('RF', clf4), ('svm', clf5)],
+                             voting='soft', weights=[93.11, 99.09, 99.09])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def ensemble_group4():
+    clf1 = DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+                                    max_features='log2', max_leaf_nodes=None,
+                                    min_impurity_decrease=0.0, min_impurity_split=None,
+                                    min_samples_leaf=0.2, min_samples_split=0.5,
+                                    min_weight_fraction_leaf=0.0, presort=False, random_state=2,
+                                    splitter='random')
+    clf2 = GaussianNB(priors=None)
+    clf3 = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='euclidean',
+                               metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+                               weights='distance')
+    clf4 = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+                                    max_depth=None, max_features=0.6933792121972574,
+                                    max_leaf_nodes=None, min_impurity_decrease=0.0,
+                                    min_impurity_split=None, min_samples_leaf=18,
+                                    min_samples_split=2, min_weight_fraction_leaf=0.0,
+                                    n_estimators=2078, n_jobs=1, oob_score=False, random_state=1,
+                                    verbose=False, warm_start=False)
+    clf5 = svm.SVC(C=1045.8970220658168, cache_size=512, class_weight=None, coef0=0.0,
+                                  decision_function_shape='ovr', degree=1, gamma='auto', kernel='linear',
+                                  max_iter=14263117.0, random_state=3, shrinking=False, probability=True,
+                                  tol=5.3658140645203695e-05, verbose=False)
+    estim = VotingClassifier(estimators=[('GNB', clf2), ('RF', clf4), ('svm', clf5)],
+                            voting='soft', weights=[99.05, 99.09, 99.09])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def ensemble_group5_without_tpe():
+    clf1 = DecisionTreeClassifier(random_state=0)
+    clf2 = GaussianNB()
+    clf3 = KNeighborsClassifier(n_neighbors=3)
+    clf4 = RandomForestClassifier(max_depth=2, random_state=0)
+    clf5 = svm.SVC(probability=True)
+    estim = VotingClassifier(estimators=[('GNB', clf2), ('KNN', clf3), ('svm', clf5)],
+                             voting='soft', weights=[93.11, 99.05, 99.09])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def ensemble_group5():
+    clf1 = DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+                                    max_features='log2', max_leaf_nodes=None,
+                                    min_impurity_decrease=0.0, min_impurity_split=None,
+                                    min_samples_leaf=0.2, min_samples_split=0.5,
+                                    min_weight_fraction_leaf=0.0, presort=False, random_state=2,
+                                    splitter='random')
+    clf2 = GaussianNB(priors=None)
+    clf3 = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='euclidean',
+                               metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+                               weights='distance')
+    clf4 = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+                                    max_depth=None, max_features=0.6933792121972574,
+                                    max_leaf_nodes=None, min_impurity_decrease=0.0,
+                                    min_impurity_split=None, min_samples_leaf=18,
+                                    min_samples_split=2, min_weight_fraction_leaf=0.0,
+                                    n_estimators=2078, n_jobs=1, oob_score=False, random_state=1,
+                                    verbose=False, warm_start=False)
+    clf5 = svm.SVC(C=1045.8970220658168, cache_size=512, class_weight=None, coef0=0.0,
+                                  decision_function_shape='ovr', degree=1, gamma='auto', kernel='linear',
+                                  max_iter=14263117.0, random_state=3, shrinking=False, probability=True,
+                                  tol=5.3658140645203695e-05, verbose=False)
+    estim = VotingClassifier(estimators=[('GNB', clf2), ('KNN', clf3), ('svm', clf5)],
+                            voting='soft', weights=[99.05, 99.05, 99.09])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
 if __name__ == '__main__':
     x_vectors, y_vectors = extract_features('D:\\My Source Codes\\Projects-Python'
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
@@ -313,7 +440,9 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    ensemble_group2_without_tpe()
-    ensemble_group2()
+    ensemble_group4_without_tpe()
+    ensemble_group4()
 
+    ensemble_group5_without_tpe()
+    ensemble_group5()
 
