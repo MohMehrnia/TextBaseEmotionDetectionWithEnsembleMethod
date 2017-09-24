@@ -1,0 +1,14 @@
+score 0.982126058325
+f1score 0.990982439487
+accuracy score 0.982126058325
+
+******TPE*************
+score 0.982126058325
+f1score 0.990982439487
+accuracy score 0.982126058325
+{'learner': SVC(C=1045.8970220658168, cache_size=512, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=1, gamma='auto', kernel='linear',
+  max_iter=14263117.0, probability=False, random_state=3, shrinking=False,
+  tol=5.3658140645203695e-05, verbose=False), 'preprocs': (PCA(copy=True, iterated_power='auto', n_components=4, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),), 'ex_preprocs': ()}
+

@@ -209,7 +209,7 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    print('**********svm*************')
-    svm_model(x_train, y_train, x_test, y_test)
-    print('******svm TPE*************')
-    svm_model_tpe(x_train, y_train, x_test, y_test)
+    print('**********KNN*************')
+    knn_model(x_train, y_train, x_test, y_test)
+    print('******KNN TPE*************')
+    knn_model_tpe(x_train, y_train, x_test, y_test)
