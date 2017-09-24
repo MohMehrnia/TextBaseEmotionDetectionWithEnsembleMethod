@@ -17,6 +17,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
+from sklearn.ensemble import VotingClassifier
 
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
@@ -94,14 +95,14 @@ def extract_features(dataset_csv, feature_csv):
     return x, y
 
 
-def svm_model(x_tra, y_tra, x_tes, y_tes):
+def svm_model():
     estim = svm.SVC()
     estim.fit(x_train, y_train)
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 
-def svm_model_tpe(x_tra, y_tra, x_tes, y_tes):
+def svm_model_tpe():
     estim = HyperoptEstimator(classifier=svc('my_clf',
                                              kernels=['linear', 'sigmoid']),
                               preprocessing=[pca('my_pca')],
@@ -115,14 +116,14 @@ def svm_model_tpe(x_tra, y_tra, x_tes, y_tes):
     print(estim.best_model())
 
 
-def knn_model(x_tra, y_tra, x_tes, y_tes):
+def knn_model():
     estim = KNeighborsClassifier(n_neighbors=3)
     estim.fit(x_train, y_train)
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 
-def knn_model_tpe(x_tra, y_tra, x_tes, y_tes):
+def knn_model_tpe():
     estim = HyperoptEstimator(classifier=knn('my_clf'),
                               preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
@@ -135,14 +136,14 @@ def knn_model_tpe(x_tra, y_tra, x_tes, y_tes):
     print(estim.best_model())
 
 
-def randomforest_model(x_tra, y_tra, x_tes, y_tes):
+def randomforest_model():
     estim = RandomForestClassifier(max_depth=2, random_state=0)
     estim.fit(x_train, y_train)
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 
-def randomforst_model_tpe(x_tra, y_tra, x_tes, y_tes):
+def randomforst_model_tpe():
     estim = HyperoptEstimator(classifier=random_forest('my_clf'),
                               preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
@@ -155,14 +156,14 @@ def randomforst_model_tpe(x_tra, y_tra, x_tes, y_tes):
     print(estim.best_model())
 
 
-def decisiontree_model(x_tra, y_tra, x_tes, y_tes):
+def decisiontree_model():
     estim = DecisionTreeClassifier(random_state=0)
     estim.fit(x_train, y_train)
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 
-def decisiontree_model_tpe(x_tra, y_tra, x_tes, y_tes):
+def decisiontree_model_tpe():
     estim = HyperoptEstimator(classifier=decision_tree('my_clf', min_samples_leaf=0.2, min_samples_split=0.5),
                               preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
@@ -175,14 +176,14 @@ def decisiontree_model_tpe(x_tra, y_tra, x_tes, y_tes):
     print(estim.best_model())
 
 
-def gaussian_nb_model(x_tra, y_tra, x_tes, y_tes):
+def gaussian_nb_model():
     estim = GaussianNB()
     estim.fit(x_train, y_train)
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 
-def gaussian_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
+def gaussian_nb_model_tpe():
     estim = HyperoptEstimator(classifier=gaussian_nb('my_clf'),
                               preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
@@ -194,6 +195,109 @@ def gaussian_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
     print(estim.best_model())
 
+
+def gaussian_nb_model():
+    estim = GaussianNB()
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def gaussian_nb_model_tpe():
+    estim = HyperoptEstimator(classifier=gaussian_nb('my_clf'),
+                              preprocessing=[pca('my_pca')],
+                              algo=tpe.suggest,
+                              max_evals=150,
+                              trial_timeout=60,
+                              verbose=0)
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+    print(estim.best_model())
+
+
+def ensemble_group1_without_tpe():
+    clf1 = DecisionTreeClassifier(random_state=0)
+    clf2 = GaussianNB()
+    clf3 = KNeighborsClassifier(n_neighbors=3)
+    clf4 = RandomForestClassifier(max_depth=2, random_state=0)
+    clf5 = svm.SVC(probability=True)
+    estim = VotingClassifier(estimators=[('dt', clf1), ('GNB', clf2), ('KNN', clf3), ('RF', clf4), ('svm', clf5)],
+                             voting='soft', weights=[97.98, 93.11, 99.05, 99.09, 99.09])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def ensemble_group1():
+    clf1 = DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+                                    max_features='log2', max_leaf_nodes=None,
+                                    min_impurity_decrease=0.0, min_impurity_split=None,
+                                    min_samples_leaf=0.2, min_samples_split=0.5,
+                                    min_weight_fraction_leaf=0.0, presort=False, random_state=2,
+                                    splitter='random')
+    clf2 = GaussianNB(priors=None)
+    clf3 = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='euclidean',
+                               metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+                               weights='distance')
+    clf4 = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+                                    max_depth=None, max_features=0.6933792121972574,
+                                    max_leaf_nodes=None, min_impurity_decrease=0.0,
+                                    min_impurity_split=None, min_samples_leaf=18,
+                                    min_samples_split=2, min_weight_fraction_leaf=0.0,
+                                    n_estimators=2078, n_jobs=1, oob_score=False, random_state=1,
+                                    verbose=False, warm_start=False)
+    clf5 = svm.SVC(C=1045.8970220658168, cache_size=512, class_weight=None, coef0=0.0,
+                                  decision_function_shape='ovr', degree=1, gamma='auto', kernel='linear',
+                                  max_iter=14263117.0, random_state=3, shrinking=False, probability=True,
+                                  tol=5.3658140645203695e-05, verbose=False)
+    estim = VotingClassifier(estimators=[('dt', clf1), ('GNB', clf2), ('KNN', clf3), ('RF', clf4), ('svm', clf5)],
+                            voting='soft', weights=[99.09, 99.05, 99.05, 99.09, 99.09])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def ensemble_group2_without_tpe():
+    clf1 = DecisionTreeClassifier(random_state=0)
+    clf2 = GaussianNB()
+    clf3 = KNeighborsClassifier(n_neighbors=3)
+    clf4 = RandomForestClassifier(max_depth=2, random_state=0)
+    clf5 = svm.SVC(probability=True)
+    estim = VotingClassifier(estimators=[('dt', clf1), ('GNB', clf2), ('KNN', clf3)],
+                             voting='soft', weights=[97.98, 93.11, 99.05])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
+
+def ensemble_group2():
+    clf1 = DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+                                    max_features='log2', max_leaf_nodes=None,
+                                    min_impurity_decrease=0.0, min_impurity_split=None,
+                                    min_samples_leaf=0.2, min_samples_split=0.5,
+                                    min_weight_fraction_leaf=0.0, presort=False, random_state=2,
+                                    splitter='random')
+    clf2 = GaussianNB(priors=None)
+    clf3 = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='euclidean',
+                               metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+                               weights='distance')
+    clf4 = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+                                    max_depth=None, max_features=0.6933792121972574,
+                                    max_leaf_nodes=None, min_impurity_decrease=0.0,
+                                    min_impurity_split=None, min_samples_leaf=18,
+                                    min_samples_split=2, min_weight_fraction_leaf=0.0,
+                                    n_estimators=2078, n_jobs=1, oob_score=False, random_state=1,
+                                    verbose=False, warm_start=False)
+    clf5 = svm.SVC(C=1045.8970220658168, cache_size=512, class_weight=None, coef0=0.0,
+                                  decision_function_shape='ovr', degree=1, gamma='auto', kernel='linear',
+                                  max_iter=14263117.0, random_state=3, shrinking=False, probability=True,
+                                  tol=5.3658140645203695e-05, verbose=False)
+    estim = VotingClassifier(estimators=[('dt', clf1), ('GNB', clf2), ('KNN', clf3)],
+                            voting='soft', weights=[99.09, 99.05, 99.05])
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 if __name__ == '__main__':
     x_vectors, y_vectors = extract_features('D:\\My Source Codes\\Projects-Python'
@@ -209,7 +313,7 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    print('**********KNN*************')
-    knn_model(x_train, y_train, x_test, y_test)
-    print('******KNN TPE*************')
-    knn_model_tpe(x_train, y_train, x_test, y_test)
+    ensemble_group2_without_tpe()
+    ensemble_group2()
+
+

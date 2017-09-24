@@ -1,0 +1,8 @@
+**********gausian *************
+f1score 0.931174089069
+accuracy score 0.872060206961
+******gausian TPE*************
+f1score 0.990503323837
+accuracy score 0.982126058325
+{'learner': GaussianNB(priors=None), 'preprocs': (PCA(copy=True, iterated_power='auto', n_components=32, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),), 'ex_preprocs': ()}
