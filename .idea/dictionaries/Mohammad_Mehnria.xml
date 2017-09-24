@@ -2,10 +2,15 @@
   <dictionary name="Mohammad Mehnria">
     <words>
       <w>colec</w>
+      <w>countvector</w>
+      <w>decisiontree</w>
       <w>estim</w>
       <w>fearture</w>
+      <w>fscore</w>
       <w>gensim</w>
       <w>instancecol</w>
+      <w>randomforest</w>
+      <w>randomforst</w>
       <w>readdata</w>
       <w>stemmer</w>
       <w>tfidf</w>
