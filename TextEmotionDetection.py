@@ -91,7 +91,7 @@ def extract_features(dataset_csv, feature_csv):
         print('Ending Extract Features.......')
     else:
         print('Loading Last Features.......')
-        x, y = loaddata(feature_csv, 50)
+        x, y = loaddata(feature_csv, 100)
         print('End Loading Last Features.......')
     return x, y
 
@@ -446,9 +446,9 @@ def ensemble_group5():
 if __name__ == '__main__':
     x_vectors, y_vectors = extract_features('D:\\My Source Codes\\Projects-Python'
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
-                                            'text_emotion_3class.csv',
+                                            'text_emotion_6class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
-                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features3cl.csv')
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features6cl.csv')
     test_size = int(0.2 * len(y_vectors))
     np.random.seed(13)
     indices = np.random.permutation(len(x_vectors))
@@ -457,4 +457,4 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    dbn()
+    ensemble_group1()
