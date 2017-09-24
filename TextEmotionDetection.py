@@ -8,8 +8,8 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import *
 from nltk.tokenize import RegexpTokenizer
 from collections import namedtuple
-from hpsklearn import HyperoptEstimator, svc, knn, random_forest, decision_tree, gaussian_nb, rbm, pca
-from sklearn import svm
+from hpsklearn import HyperoptEstimator, svc, knn, random_forest, decision_tree, gaussian_nb, ada_boost, pca
+from sklearn import svm, linear_model
 from hyperopt import tpe
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -18,6 +18,8 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import BernoulliRBM
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import AdaBoostClassifier
 
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
@@ -204,23 +206,23 @@ def gaussian_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
     print(estim.best_model())
 
 
-def rbm_nb_model(x_tra, y_tra, x_tes, y_tes):
-    estim = BernoulliRBM(n_components=2)
+def adaboost_model(x_tra, y_tra, x_tes, y_tes):
+    logistic = linear_model.LogisticRegression()
+    estim = AdaBoostClassifier(n_estimators=100)
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 
-def rbm_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
-    estim = HyperoptEstimator(classifier=rbm('my_clf'),
+def adaboost_model_tpe(x_tra, y_tra, x_tes, y_tes):
+    estim = HyperoptEstimator(classifier=ada_boost('my_clf'),
                               preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
                               max_evals=150,
                               trial_timeout=60,
                               verbose=0)
+
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
     print(estim.best_model())
@@ -240,12 +242,7 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    print('**********random forest*************')
-    randomforest_model(x_train, y_train, x_test, y_test)
-    print('******random forest TPE*************')
-    randomforst_model_tpe (x_train, y_train, x_test, y_test)
-
     print('**********RBM*************')
-    rbm_nb_model(x_train, y_train, x_test, y_test)
+    adaboost_model(x_train, y_train, x_test, y_test)
     print('******RBM TPE*************')
-    rbm_nb_model_tpe (x_train, y_train, x_test, y_test)
+    adaboost_model_tpe (x_train, y_train, x_test, y_test)
