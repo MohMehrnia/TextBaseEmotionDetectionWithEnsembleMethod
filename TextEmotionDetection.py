@@ -148,7 +148,7 @@ def randomforest_model(x_tra, y_tra, x_tes, y_tes):
 
 def randomforst_model_tpe(x_tra, y_tra, x_tes, y_tes):
     estim = HyperoptEstimator(classifier=random_forest('my_clf'),
-                              preprocessing=[],
+                              preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
                               max_evals=150,
                               trial_timeout=60,
@@ -192,7 +192,7 @@ def gaussian_nb_model(x_tra, y_tra, x_tes, y_tes):
 
 def gaussian_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
     estim = HyperoptEstimator(classifier=gaussian_nb('my_clf'),
-                              preprocessing=[],
+                              preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
                               max_evals=150,
                               trial_timeout=60,
@@ -214,7 +214,7 @@ def rbm_nb_model(x_tra, y_tra, x_tes, y_tes):
 
 def rbm_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
     estim = HyperoptEstimator(classifier=rbm('my_clf'),
-                              preprocessing=[],
+                              preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
                               max_evals=150,
                               trial_timeout=60,
