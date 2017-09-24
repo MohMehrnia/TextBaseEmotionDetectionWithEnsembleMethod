@@ -2,3 +2,13 @@
 score 0.925531914894
 f1score 0.961325966851
 accuracy score 0.925531914894
+******SVM TPE*************
+score 0.925531914894
+f1score 0.961325966851
+accuracy score 0.925531914894
+{'learner': SVC(C=0.3990140253531111, cache_size=512, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=1, gamma=3.301428545189257,
+  kernel='rbf', max_iter=76344639.0, probability=False, random_state=4,
+  shrinking=False, tol=1.569962749673701e-05, verbose=False), 'preprocs': (PCA(copy=True, iterated_power='auto', n_components=4, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=True),), 'ex_preprocs': ()}
+

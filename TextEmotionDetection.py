@@ -8,7 +8,7 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import *
 from nltk.tokenize import RegexpTokenizer
 from collections import namedtuple
-from hpsklearn import HyperoptEstimator, svc, knn, random_forest, decision_tree, gaussian_nb, rbm
+from hpsklearn import HyperoptEstimator, svc, knn, random_forest, decision_tree, gaussian_nb, rbm, pca
 from sklearn import svm
 from hyperopt import tpe
 from sklearn.neighbors import KNeighborsClassifier
@@ -18,6 +18,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import BernoulliRBM
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
+
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
 from gensim.models.doc2vec import Doc2Vec
@@ -101,8 +102,9 @@ def svm_model(x_tra, y_tra, x_tes, y_tes):
 
 
 def svm_model_tpe(x_tra, y_tra, x_tes, y_tes):
-    estim = HyperoptEstimator(classifier=svc('my_clf'),
-                              preprocessing=[],
+    estim = HyperoptEstimator(classifier=svc('my_clf',
+                                             kernels=['linear', 'sigmoid']),
+                              preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
                               max_evals=150,
                               trial_timeout=60,
@@ -124,7 +126,7 @@ def knn_model(x_tra, y_tra, x_tes, y_tes):
 
 def knn_model_tpe(x_tra, y_tra, x_tes, y_tes):
     estim = HyperoptEstimator(classifier=knn('my_clf'),
-                              preprocessing=[],
+                              preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
                               max_evals=150,
                               trial_timeout=60,
@@ -167,8 +169,8 @@ def decisiontree_model(x_tra, y_tra, x_tes, y_tes):
 
 
 def decisiontree_model_tpe(x_tra, y_tra, x_tes, y_tes):
-    estim = HyperoptEstimator(classifier=decision_tree('my_clf'),
-                              preprocessing=[],
+    estim = HyperoptEstimator(classifier=decision_tree('my_clf', min_samples_leaf=0.2, min_samples_split=0.5),
+                              preprocessing=[pca('my_pca')],
                               algo=tpe.suggest,
                               max_evals=150,
                               trial_timeout=60,
@@ -230,7 +232,7 @@ if __name__ == '__main__':
                                             'text_emotion_2class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features.csv')
-    test_size = int(0.1 * len(y_vectors))
+    test_size = int(0.2 * len(y_vectors))
     np.random.seed(13)
     indices = np.random.permutation(len(x_vectors))
     x_train = x_vectors[indices[:-test_size]]
@@ -238,7 +240,12 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    print('**********SVM*************')
-    svm_model(x_train, y_train, x_test, y_test)
-    print('******SVM TPE*************')
-    svm_model_tpe(x_train, y_train, x_test, y_test)
+    print('**********decisiontree*************')
+    decisiontree_model(x_train, y_train, x_test, y_test)
+    print('******decisiontree TPE*************')
+    decisiontree_model_tpe(x_train, y_train, x_test, y_test)
+
+    print('**********gaussian_nb*************')
+    gaussian_nb_model(x_train, y_train, x_test, y_test)
+    print('******gaussian_nb TPE*************')
+    gaussian_nb_model_tpe(x_train, y_train, x_test, y_test)

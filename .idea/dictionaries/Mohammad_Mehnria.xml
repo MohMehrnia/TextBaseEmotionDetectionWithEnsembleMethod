@@ -9,6 +9,7 @@
       <w>fscore</w>
       <w>gensim</w>
       <w>instancecol</w>
+      <w>preprocs</w>
       <w>randomforest</w>
       <w>randomforst</w>
       <w>readdata</w>

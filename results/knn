@@ -1,0 +1,11 @@
+**********knn*************
+score 0.93899204244
+f1score 0.96853625171
+accuracy score 0.93899204244
+******knn TPE*************
+score 0.941644562334
+f1score 0.969945355191
+accuracy score 0.941644562334
+{'learner': KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='euclidean',
+           metric_params=None, n_jobs=1, n_neighbors=13, p=2,
+           weights='uniform'), 'preprocs': (), 'ex_preprocs': ()}
