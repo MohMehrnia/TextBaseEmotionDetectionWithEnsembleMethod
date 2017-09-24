@@ -15,11 +15,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.neural_network import BernoulliRBM
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
-from sklearn.pipeline import Pipeline
-from sklearn.ensemble import AdaBoostClassifier
 
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
@@ -49,6 +46,7 @@ def readdata(train_set_path):
 def encode_label(label):
     le = LabelEncoder()
     label_encoded = le.fit(label).transform(label)
+    print(le.classes_)
     return label_encoded
 
 
@@ -206,28 +204,6 @@ def gaussian_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
     print(estim.best_model())
 
 
-def adaboost_model(x_tra, y_tra, x_tes, y_tes):
-    logistic = linear_model.LogisticRegression()
-    estim = AdaBoostClassifier(n_estimators=100)
-    estim.fit(x_train, y_train)
-    print("f1score", f1_score(estim.predict(x_test), y_test))
-    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
-
-
-def adaboost_model_tpe(x_tra, y_tra, x_tes, y_tes):
-    estim = HyperoptEstimator(classifier=ada_boost('my_clf'),
-                              preprocessing=[pca('my_pca')],
-                              algo=tpe.suggest,
-                              max_evals=150,
-                              trial_timeout=60,
-                              verbose=0)
-
-    estim.fit(x_train, y_train)
-    print("f1score", f1_score(estim.predict(x_test), y_test))
-    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
-    print(estim.best_model())
-
-
 if __name__ == '__main__':
     x_vectors, y_vectors = extract_features('D:\\My Source Codes\\Projects-Python'
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
@@ -243,6 +219,6 @@ if __name__ == '__main__':
     y_test = y_vectors[indices[-test_size:]]
 
     print('**********RBM*************')
-    adaboost_model(x_train, y_train, x_test, y_test)
+    svm_model(x_train, y_train, x_test, y_test)
     print('******RBM TPE*************')
-    adaboost_model_tpe (x_train, y_train, x_test, y_test)
+    svm_model_tpe(x_train, y_train, x_test, y_test)

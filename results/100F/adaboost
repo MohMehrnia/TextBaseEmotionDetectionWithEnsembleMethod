@@ -1,0 +1,12 @@
+Without TPE
+f1score 95.27
+accuracy score 90.98
+
+With TPE
+f1score 0.969945355191
+accuracy score 0.941644562334
+{'learner': AdaBoostClassifier(algorithm='SAMME.R', base_estimator=None,
+          learning_rate=0.0026920500884394325, n_estimators=55,
+          random_state=2), 'preprocs': (PCA(copy=True, iterated_power='auto', n_components=4, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),), 'ex_preprocs': ()}
+
