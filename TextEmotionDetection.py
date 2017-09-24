@@ -429,9 +429,9 @@ def ensemble_group5():
 if __name__ == '__main__':
     x_vectors, y_vectors = extract_features('D:\\My Source Codes\\Projects-Python'
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
-                                            'text_emotion_2class.csv',
+                                            'text_emotion_3class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
-                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features.csv')
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features3cl.csv')
     test_size = int(0.2 * len(y_vectors))
     np.random.seed(13)
     indices = np.random.permutation(len(x_vectors))
@@ -440,9 +440,23 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
+    print("group1")
+    ensemble_group1_without_tpe()
+    ensemble_group1()
+
+    print("group2")
+    ensemble_group2_without_tpe()
+    ensemble_group2()
+
+    print("group3")
+    ensemble_group3_without_tpe()
+    ensemble_group3()
+
+    print("group4")
     ensemble_group4_without_tpe()
     ensemble_group4()
 
+    print("group5")
     ensemble_group5_without_tpe()
     ensemble_group5()
 
