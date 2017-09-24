@@ -22,6 +22,7 @@ from sklearn.metrics import accuracy_score
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
 from gensim.models.doc2vec import Doc2Vec
 
+
 def readdata(train_set_path):
     x = []
     y = []
@@ -88,7 +89,7 @@ def extract_features(dataset_csv, feature_csv):
         print('Ending Extract Features.......')
     else:
         print('Loading Last Features.......')
-        x, y = loaddata(feature_csv,100)
+        x, y = loaddata(feature_csv, 50)
         print('End Loading Last Features.......')
     return x, y
 
@@ -96,7 +97,6 @@ def extract_features(dataset_csv, feature_csv):
 def svm_model(x_tra, y_tra, x_tes, y_tes):
     estim = svm.SVC()
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
@@ -111,7 +111,6 @@ def svm_model_tpe(x_tra, y_tra, x_tes, y_tes):
                               verbose=0)
     estim.fit(x_train, y_train)
     print("score", estim.score(x_test, y_test))
-    print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
     print(estim.best_model())
 
@@ -119,7 +118,6 @@ def svm_model_tpe(x_tra, y_tra, x_tes, y_tes):
 def knn_model(x_tra, y_tra, x_tes, y_tes):
     estim = KNeighborsClassifier(n_neighbors=3)
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
@@ -132,7 +130,6 @@ def knn_model_tpe(x_tra, y_tra, x_tes, y_tes):
                               trial_timeout=60,
                               verbose=0)
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
     print(estim.best_model())
@@ -141,7 +138,6 @@ def knn_model_tpe(x_tra, y_tra, x_tes, y_tes):
 def randomforest_model(x_tra, y_tra, x_tes, y_tes):
     estim = RandomForestClassifier(max_depth=2, random_state=0)
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
@@ -154,7 +150,6 @@ def randomforst_model_tpe(x_tra, y_tra, x_tes, y_tes):
                               trial_timeout=60,
                               verbose=0)
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
     print(estim.best_model())
@@ -163,7 +158,6 @@ def randomforst_model_tpe(x_tra, y_tra, x_tes, y_tes):
 def decisiontree_model(x_tra, y_tra, x_tes, y_tes):
     estim = DecisionTreeClassifier(random_state=0)
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
@@ -176,7 +170,6 @@ def decisiontree_model_tpe(x_tra, y_tra, x_tes, y_tes):
                               trial_timeout=60,
                               verbose=0)
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
     print(estim.best_model())
@@ -185,7 +178,6 @@ def decisiontree_model_tpe(x_tra, y_tra, x_tes, y_tes):
 def gaussian_nb_model(x_tra, y_tra, x_tes, y_tes):
     estim = GaussianNB()
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
@@ -198,7 +190,6 @@ def gaussian_nb_model_tpe(x_tra, y_tra, x_tes, y_tes):
                               trial_timeout=60,
                               verbose=0)
     estim.fit(x_train, y_train)
-    print("score", estim.score(x_test, y_test))
     print("f1score", f1_score(estim.predict(x_test), y_test))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
     print(estim.best_model())
@@ -218,7 +209,7 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    print('**********RBM*************')
+    print('**********svm*************')
     svm_model(x_train, y_train, x_test, y_test)
-    print('******RBM TPE*************')
+    print('******svm TPE*************')
     svm_model_tpe(x_train, y_train, x_test, y_test)
