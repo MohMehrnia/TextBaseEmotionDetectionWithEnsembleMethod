@@ -218,7 +218,7 @@ def gaussian_nb_model_tpe():
 
 
 def dbn():
-    estim = SupervisedDBNClassification(hidden_layers_structure=[256, 256],
+    estim = SupervisedDBNClassification(hidden_layers_structure=[256, 256, 256, 256, 256, 256 ],
                                              learning_rate_rbm=0.05,
                                              learning_rate=0.1,
                                              n_epochs_rbm=10,
