@@ -1,0 +1,9 @@
+**********gaussian_nb*************
+score 0.93899204244
+f1score 0.96853625171
+accuracy score 0.93899204244
+******gaussian_nb TPE*************
+score 0.93899204244
+f1score 0.96853625171
+accuracy score 0.93899204244
+{'learner': GaussianNB(priors=None), 'preprocs': (), 'ex_preprocs': ()}

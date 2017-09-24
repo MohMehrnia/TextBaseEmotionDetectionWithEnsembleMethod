@@ -1,0 +1,15 @@
+**********decisiontree*************
+score 0.883289124668
+f1score 0.937677053824
+accuracy score 0.883289124668
+******decisiontree TPE*************
+score 0.941644562334
+f1score 0.969945355191
+accuracy score 0.941644562334
+{'learner': DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features='sqrt', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=0.2, min_samples_split=0.5,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=0,
+            splitter='random'), 'preprocs': (PCA(copy=True, iterated_power='auto', n_components=20, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False),), 'ex_preprocs': ()}

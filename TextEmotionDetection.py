@@ -240,12 +240,12 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    print('**********decisiontree*************')
-    decisiontree_model(x_train, y_train, x_test, y_test)
-    print('******decisiontree TPE*************')
-    decisiontree_model_tpe(x_train, y_train, x_test, y_test)
+    print('**********random forest*************')
+    randomforest_model(x_train, y_train, x_test, y_test)
+    print('******random forest TPE*************')
+    randomforst_model_tpe (x_train, y_train, x_test, y_test)
 
-    print('**********gaussian_nb*************')
-    gaussian_nb_model(x_train, y_train, x_test, y_test)
-    print('******gaussian_nb TPE*************')
-    gaussian_nb_model_tpe(x_train, y_train, x_test, y_test)
+    print('**********RBM*************')
+    rbm_nb_model(x_train, y_train, x_test, y_test)
+    print('******RBM TPE*************')
+    rbm_nb_model_tpe (x_train, y_train, x_test, y_test)
