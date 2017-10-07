@@ -19,6 +19,7 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import VotingClassifier
 from dbn.tensorflow import SupervisedDBNClassification
+from sklearn.neural_network import MLPClassifier
 
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
@@ -448,7 +449,7 @@ if __name__ == '__main__':
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
                                             'text_emotion_6class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
-                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features6cl.csv')
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features2cl.csv')
     test_size = int(0.2 * len(y_vectors))
     np.random.seed(13)
     indices = np.random.permutation(len(x_vectors))
@@ -457,4 +458,8 @@ if __name__ == '__main__':
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
 
-    ensemble_group1()
+    estim = MLPClassifier(solver='lbfgs', alpha=1e-5,hidden_layer_sizes=(5, 2), random_state=1)
+    estim.fit(x_train, y_train)
+    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
+
