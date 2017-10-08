@@ -54,24 +54,6 @@ def encode_label(label):
     return label_encoded
 
 
-def create_model(x, y):
-    docs = []
-    dfs = []
-    features_vectors = pd.DataFrame()
-    analyzedDocument = namedtuple('AnalyzedDocument', 'words tags')
-    for i, text in enumerate(x):
-        words = text.lower().split()
-        tags = [i]
-        docs.append(analyzedDocument(words, tags))
-    model = Doc2Vec(docs, size=100, window=300, min_count=1, workers=4)
-    for i in range(model.docvecs.__len__()):
-        dfs.append(model.docvecs[i].transpose())
-
-    features_vectors = pd.DataFrame(dfs)
-    features_vectors['label'] = y
-    return features_vectors, model
-
-
 def loaddata(filename,instancecol):
     file_reader = csv.reader(open(filename,'r'),delimiter=',')
     x = []
@@ -82,17 +64,35 @@ def loaddata(filename,instancecol):
     return np.array(x[1:]).astype(np.float32), np.array(y[1:]).astype(np.int)
 
 
-def extract_features(dataset_csv, feature_csv):
+def create_model(x, y, feature_count):
+    docs = []
+    dfs = []
+    features_vectors = pd.DataFrame()
+    analyzedDocument = namedtuple('AnalyzedDocument', 'words tags')
+    for i, text in enumerate(x):
+        words = text.lower().split()
+        tags = [i]
+        docs.append(analyzedDocument(words, tags))
+    model = Doc2Vec(docs, size=feature_count, window=300, min_count=1, workers=4)
+    for i in range(model.docvecs.__len__()):
+        dfs.append(model.docvecs[i].transpose())
+
+    features_vectors = pd.DataFrame(dfs)
+    features_vectors['label'] = y
+    return features_vectors, model
+
+
+def extract_features(dataset_csv, feature_csv, instancecol):
     if not os.path.exists(feature_csv):
         print('Beginning Extract Features.......')
         x, y = readdata(dataset_csv)
         y = encode_label(y)
-        features_vactors, model = create_model(x, y)
+        features_vactors, model = create_model(x, y, instancecol)
         features_vactors.to_csv(feature_csv, mode='a', header=False, index=False)
         print('Ending Extract Features.......')
     else:
         print('Loading Last Features.......')
-        x, y = loaddata(feature_csv, 100)
+        x, y = loaddata(feature_csv, instancecol)
         print('End Loading Last Features.......')
     return x, y
 
@@ -243,7 +243,7 @@ def ensemble_group1_without_tpe():
     estim = VotingClassifier(estimators=[('dt', clf1), ('GNB', clf2), ('KNN', clf3), ('RF', clf4), ('svm', clf5)],
                              voting='soft', weights=[97.98, 93.11, 99.05, 99.09, 99.09])
     estim.fit(x_train, y_train)
-    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("f1score", f1_score(estim.predict(x_test), y_test, average='micro'))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 
@@ -272,7 +272,7 @@ def ensemble_group1():
     estim = VotingClassifier(estimators=[('dt', clf1), ('GNB', clf2), ('KNN', clf3), ('RF', clf4), ('svm', clf5)],
                             voting='soft', weights=[99.09, 99.05, 99.05, 99.09, 99.09])
     estim.fit(x_train, y_train)
-    print("f1score", f1_score(estim.predict(x_test), y_test))
+    print("f1score", f1_score(estim.predict(x_test), y_test, average='micro'))
     print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
 
 
@@ -449,17 +449,11 @@ if __name__ == '__main__':
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
                                             'text_emotion_6class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
-                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features2cl.csv')
-    test_size = int(0.2 * len(y_vectors))
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features6cl600.csv', 600)
     np.random.seed(13)
-    indices = np.random.permutation(len(x_vectors))
+    indices = np.random.permutation(1000)
+    test_size = int(0.1 * len(indices))
     x_train = x_vectors[indices[:-test_size]]
     y_train = y_vectors[indices[:-test_size]]
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
-
-    estim = MLPClassifier(solver='lbfgs', alpha=1e-5,hidden_layer_sizes=(5, 2), random_state=1)
-    estim.fit(x_train, y_train)
-    print("f1score", f1_score(estim.predict(x_test), y_test))
-    print("accuracy score", accuracy_score(estim.predict(x_test), y_test))
-

@@ -2,20 +2,28 @@
   <dictionary name="Mohammad Mehnria">
     <words>
       <w>adaboost</w>
+      <w>classificaton</w>
       <w>colec</w>
       <w>countvector</w>
+      <w>dataset</w>
       <w>decisiontree</w>
       <w>estim</w>
       <w>fearture</w>
+      <w>fmodel</w>
       <w>fscore</w>
       <w>gensim</w>
       <w>instancecol</w>
+      <w>loaddata</w>
+      <w>modelname</w>
+      <w>modle</w>
+      <w>pmodel</w>
       <w>preprocs</w>
       <w>randomforest</w>
       <w>randomforst</w>
       <w>readdata</w>
       <w>stemmer</w>
       <w>tfidf</w>
+      <w>tmodel</w>
       <w>toker</w>
       <w>vactors</w>
       <w>vectorizer</w>

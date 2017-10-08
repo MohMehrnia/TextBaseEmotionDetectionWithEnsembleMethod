@@ -1,0 +1,27 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="14">
+            <item index="0" class="java.lang.String" itemvalue="altgraph" />
+            <item index="1" class="java.lang.String" itemvalue="html5lib" />
+            <item index="2" class="java.lang.String" itemvalue="PyInstaller" />
+            <item index="3" class="java.lang.String" itemvalue="scikit-cuda" />
+            <item index="4" class="java.lang.String" itemvalue="parso" />
+            <item index="5" class="java.lang.String" itemvalue="ipython" />
+            <item index="6" class="java.lang.String" itemvalue="pefile" />
+            <item index="7" class="java.lang.String" itemvalue="jedi" />
+            <item index="8" class="java.lang.String" itemvalue="Django" />
+            <item index="9" class="java.lang.String" itemvalue="macholib" />
+            <item index="10" class="java.lang.String" itemvalue="bleach" />
+            <item index="11" class="java.lang.String" itemvalue="pypiwin32" />
+            <item index="12" class="java.lang.String" itemvalue="Cython" />
+            <item index="13" class="java.lang.String" itemvalue="notebook" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
