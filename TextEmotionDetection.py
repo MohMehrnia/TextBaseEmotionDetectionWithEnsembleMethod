@@ -250,7 +250,6 @@ def ensemble_group1_without_tpe():
 def ensemble_group1():
     clf1 = DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
                                     max_features='log2', max_leaf_nodes=None,
-                                    min_impurity_decrease=0.0, min_impurity_split=None,
                                     min_samples_leaf=0.2, min_samples_split=0.5,
                                     min_weight_fraction_leaf=0.0, presort=False, random_state=2,
                                     splitter='random')
@@ -260,8 +259,8 @@ def ensemble_group1():
                                weights='distance')
     clf4 = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
                                     max_depth=None, max_features=0.6933792121972574,
-                                    max_leaf_nodes=None, min_impurity_decrease=0.0,
-                                    min_impurity_split=None, min_samples_leaf=18,
+                                    max_leaf_nodes=None,
+                                    min_samples_leaf=18,
                                     min_samples_split=2, min_weight_fraction_leaf=0.0,
                                     n_estimators=2078, n_jobs=1, oob_score=False, random_state=1,
                                     verbose=False, warm_start=False)
@@ -449,11 +448,13 @@ if __name__ == '__main__':
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
                                             'text_emotion_6class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
-                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features6cl600.csv', 600)
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features6cl600.csv',
+                                            600)
     np.random.seed(13)
-    indices = np.random.permutation(1000)
+    indices = np.random.permutation(3000)
     test_size = int(0.1 * len(indices))
     x_train = x_vectors[indices[:-test_size]]
     y_train = y_vectors[indices[:-test_size]]
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
+    ensemble_group1()
