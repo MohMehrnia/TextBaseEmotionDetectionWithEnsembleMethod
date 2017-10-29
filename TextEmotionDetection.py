@@ -8,8 +8,8 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import *
 from nltk.tokenize import RegexpTokenizer
 from collections import namedtuple
-from hpsklearn import HyperoptEstimator, svc, knn, random_forest, decision_tree, gaussian_nb, ada_boost, pca
-from sklearn import svm, linear_model
+from hpsklearn import HyperoptEstimator, svc, knn, random_forest, decision_tree, gaussian_nb, pca
+from sklearn import svm
 from hyperopt import tpe
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -19,7 +19,7 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import VotingClassifier
 from dbn.tensorflow import SupervisedDBNClassification
-from sklearn.neural_network import MLPClassifier
+from nltk.stem import WordNetLemmatizer
 
 
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
@@ -35,11 +35,13 @@ def readdata(train_set_path):
             data = []
             data = line.split(",")
             stemmer = PorterStemmer()
+            lemmatizer = WordNetLemmatizer()
             if data[1] != "tweet_id":
                 content = re.sub(r"(?:\@|https?\://)\S+", "", data[3].lower())
                 toker = RegexpTokenizer(r'((?<=[^\w\s])\w(?=[^\w\s])|(\W))+', gaps=True)
                 word_tokens = toker.tokenize(content)
-                filtered_sentence = [stemmer.stem(w) for w in word_tokens if not w in stop_words and w.isalpha()]
+                # filtered_sentence = [stemmer.stem(w) for w in word_tokens if not w in stop_words and w.isalpha()]
+                filtered_sentence = [lemmatizer.lemmatize(w) for w in word_tokens if not w in stop_words and w.isalpha()]
                 x.append(' '.join(filtered_sentence))
                 y.append(data[1])
 
@@ -448,13 +450,14 @@ if __name__ == '__main__':
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\'
                                             'text_emotion_6class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
-                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features6cl600.csv',
-                                            600)
+                                            '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features6cl300le.csv',
+                                            300)
     np.random.seed(13)
-    indices = np.random.permutation(3000)
+    indices = np.random.permutation(300)
     test_size = int(0.1 * len(indices))
     x_train = x_vectors[indices[:-test_size]]
     y_train = y_vectors[indices[:-test_size]]
     x_test = x_vectors[indices[-test_size:]]
     y_test = y_vectors[indices[-test_size:]]
+    print(set(y_test))
     ensemble_group1()
