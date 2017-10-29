@@ -4,9 +4,8 @@ import pandas as pd
 from sklearn import decomposition
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn import svm
 from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
@@ -104,9 +103,8 @@ def rf_model(modelname, x_train, y_train, x_test, y_test):
 
 
 def dt_model(modelname, x_train, y_train, x_test, y_test):
-    estim = DecisionTreeClassifier()
-    pca = decomposition.PCA()
-    pip = Pipeline(steps=[('DT', estim)])
+    estim = RandomForestClassifier(n_estimators=50, max_depth=16, random_state=42)
+    pip = Pipeline(steps=[('RF', estim)])
     pip.fit(x_train, y_train)
     with open(modelname, 'wb') as f:
         pk.dump(pip, f)
@@ -145,17 +143,17 @@ def create_model():
         X_test = x[indices[-test_size:]]
         Y_test = y[indices[-test_size:]]
 
-        ModelName = "Model_RF_" + str(i) + ".pkl"
+        ModelName = "Model_KNN_" + str(i) + ".pkl"
         F1_Score, Score, ErrorRate = rf_model(RFmodel_save_csv + ModelName, X_train, Y_train
                                               , X_test, Y_test)
-        pd.loc[len(pd)] = ["Random Forest", ModelName , Score, F1_Score, ErrorRate, 0, 0]
-        print(ModelName + ", Model Type=Random Forest , With Score Result " + str(Score) + " and Feature Count="
+        pd.loc[len(pd)] = ["KNN ", ModelName , Score, F1_Score, ErrorRate, 0, 0]
+        print(ModelName + ", Model Type=KNN , With Score Result " + str(Score) + " and Feature Count="
               + str(100))
 
-        ModelName = "Model_DT_" + str(i) + ".pkl"
+        ModelName = "Model_RF_" + str(i) + ".pkl"
         F1_Score, Score, ErrorRate = dt_model(DTmodel_save_csv + ModelName, X_train, Y_train, X_test, Y_test)
-        pd.loc[len(pd)] = ["Decision Tree", ModelName, Score, F1_Score, ErrorRate, 0, 0]
-        print(ModelName + ", Model Type=Decision Tree , With Score Result " + str(Score) + " and Feature Count="
+        pd.loc[len(pd)] = ["Random Forest", ModelName, Score, F1_Score, ErrorRate, 0, 0]
+        print(ModelName + ", Model Type=Random Forest , With Score Result " + str(Score) + " and Feature Count="
               + str(100))
 
         ModelName = "Model_MLP_" + str(i) + ".pkl"
@@ -176,8 +174,6 @@ def classification_methods():
     DTmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\Models\\DT\\'
     MLPmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\' \
                         'Models\\MLP\\'
-    DBPmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\' \
-                        'Models\\DB\\'
     x, y = loaddata(feature_csv, 100)
     Y_TEST = []
     Y_PRED = []
@@ -188,12 +184,12 @@ def classification_methods():
         X_test = x[indices[-test_size:]]
         Y_test = y[indices[-test_size:]]
         for i in range(0, 499):
-            ModelName = RFmodel_save_csv + "Model_RF_" + str(i) + ".pkl"
+            ModelName = RFmodel_save_csv + "Model_KNN_" + str(i) + ".pkl"
             with open(ModelName, 'rb') as f:
                 model = pk.load(f)
                 Y_TEST.append(np.asarray(Y_test))
                 Y_PRED.append(np.asarray(model.predict(X_test)))
-                print("Random Forest Model " + str(i) + ": " + str(Y_test) + "==>" + str(model.predict(X_test)))
+                print("KNN Model " + str(i) + ": " + str(Y_test) + "==>" + str(model.predict(X_test)))
 
             ModelName = DTmodel_save_csv + "Model_DT_" + str(i) + ".pkl"
             with open(ModelName, 'rb') as f:
