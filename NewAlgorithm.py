@@ -242,3 +242,4 @@ def run_model():
 
 if __name__ == '__main__':
     create_model()
+    print(0)
