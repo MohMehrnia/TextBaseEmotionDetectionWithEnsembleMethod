@@ -451,13 +451,5 @@ if __name__ == '__main__':
                                             'text_emotion_6class.csv',
                                             'D:\\My Source Codes\\Projects-Python'
                                             '\\TextBaseEmotionDetectionWithEnsembleMethod\\Dataset\\features6cl300le.csv',
-                                            300)
-    np.random.seed(13)
-    indices = np.random.permutation(300)
-    test_size = int(0.1 * len(indices))
-    x_train = x_vectors[indices[:-test_size]]
-    y_train = y_vectors[indices[:-test_size]]
-    x_test = x_vectors[indices[-test_size:]]
-    y_test = y_vectors[indices[-test_size:]]
-    print(set(y_test))
-    ensemble_group1()
+                                            100)
+
