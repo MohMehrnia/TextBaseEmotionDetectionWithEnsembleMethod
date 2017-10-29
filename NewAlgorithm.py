@@ -21,6 +21,8 @@ from nltk.stem import WordNetLemmatizer
 from collections import namedtuple
 from gensim.models.doc2vec import Doc2Vec
 from sklearn.metrics import classification_report
+from sklearn.cluster import KMeans
+from scipy import stats
 
 
 def loaddata(filename,instancecol):
@@ -177,35 +179,47 @@ def classification_methods():
     x, y = loaddata(feature_csv, 100)
     Y_TEST = []
     Y_PRED = []
-    for index in range(1, 2):
+    y_pred_total = []
+    y_test_total = []
+    for index in range(1, 200):
+        Y_TEST.clear()
+        Y_PRED.clear()
         np.random.seed(42)
         indices = sample(range(1, x.shape[0]), 1)
         test_size = int(1 * len(indices))
         X_test = x[indices[-test_size:]]
         Y_test = y[indices[-test_size:]]
-        for i in range(0, 499):
+        for i in range(1, 499):
             ModelName = RFmodel_save_csv + "Model_KNN_" + str(i) + ".pkl"
             with open(ModelName, 'rb') as f:
                 model = pk.load(f)
                 Y_TEST.append(np.asarray(Y_test))
                 Y_PRED.append(np.asarray(model.predict(X_test)))
-                print("KNN Model " + str(i) + ": " + str(Y_test) + "==>" + str(model.predict(X_test)))
+                # print("KNN Model " + str(i) + ": " + str(Y_test) + "==>" + str(model.predict(X_test)))
 
-            ModelName = DTmodel_save_csv + "Model_DT_" + str(i) + ".pkl"
+            ModelName = DTmodel_save_csv + "Model_RF_" + str(i) + ".pkl"
             with open(ModelName, 'rb') as f:
                 model = pk.load(f)
                 Y_TEST.append(np.asarray(Y_test))
                 Y_PRED.append(np.asarray(model.predict(X_test)))
-                print("Decision Tree Model " + str(i) + ": " + str(Y_test) + "==>" + str(model.predict(X_test)))
+                # print("Random Forest Model " + str(i) + ": " + str(Y_test) + "==>" + str(model.predict(X_test)))
 
             ModelName = MLPmodel_save_csv + "Model_MLP_" + str(i) + ".pkl"
             with open(ModelName, 'rb') as f:
                 model = pk.load(f)
                 Y_TEST.append(np.asarray(Y_test))
                 Y_PRED.append(np.asarray(model.predict(X_test)))
-                print("Neural Network Model " + str(i) + ": " + str(Y_test) + "==>" + str(model.predict(X_test)))
+                # print("Neural Network Model " + str(i) + ": " + str(Y_test) + "==>" + str(model.predict(X_test)))
 
-        print(accuracy_score(np.asarray(Y_PRED), np.asarray(Y_TEST)))
+        y_test_total.append(Y_test)
+        results = stats.itemfreq(np.asarray(Y_PRED))
+        results = sorted(results, key=lambda x: x[1], reverse=True)
+        y_pred_total.append(results[0][0])
+
+        # print(str(Y_test) + "==>" + str(model.predict(X_test)) + ' Score:' + str(accuracy_score(np.asarray(Y_PRED), np.asarray(Y_TEST))*100) + '%')
+
+    print(str(accuracy_score(np.asarray(y_pred_total), np.asarray(y_test_total))*100))
+    print(str(classification_report(np.asarray(y_pred_total), np.asarray(y_test_total))))
 
 
 def feature_extraction():
