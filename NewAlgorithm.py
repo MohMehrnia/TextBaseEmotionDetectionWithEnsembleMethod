@@ -127,7 +127,7 @@ def mlp_model(modelname, x_train, y_train, x_test, y_test):
 def create_model():
     print("Begin Classificaton....")
     feature_csv = 'D:\\My Source Codes\\Projects-Python' \
-                  '\\TextBaseEmotionDetectionWithEnsembleMethod\\NewDataset\\features6cl.csv'
+                  '\\TextBaseEmotionDetectionWithEnsembleMethod\\NewDataset\\features6clL.csv'
     RFmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\Models\\RF\\'
     DTmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\Models\\DT\\'
     MLPmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\' \
@@ -136,7 +136,7 @@ def create_model():
     x, y = loaddata(feature_csv, 100)
     for i in range(1, 500):
         np.random.seed(42)
-        indices = sample(range(1, x.shape[0]), 5990)
+        indices = sample(range(1, x.shape[0]), 6000)
         test_size = int(0.1 * len(indices))
         X_train = x[indices[:-test_size]]
         Y_train = y[indices[:-test_size]]
@@ -169,7 +169,7 @@ def create_model():
 
 def classification_methods():
     feature_csv = 'D:\\My Source Codes\\Projects-Python' \
-                  '\\TextBaseEmotionDetectionWithEnsembleMethod\\NewDataset\\features6cl.csv'
+                  '\\TextBaseEmotionDetectionWithEnsembleMethod\\NewDataset\\features6clL.csv'
     RFmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\Models\\RF\\'
     DTmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\Models\\DT\\'
     MLPmodel_save_csv = 'D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod\\' \
@@ -209,14 +209,55 @@ def classification_methods():
 
 
 def feature_extraction():
+    feature_csv = "D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod" \
+                  "\\NewDataset\\features6clL.csv"
+
+    dataset_csv = "D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod" \
+                  "\\NewDataset\\ANGER_Phrases_1.txt"
+    instancecol = 100
+    x, y = readdata(dataset_csv, 1)
+    features_vactors, model = create_docmodel(x, y, instancecol)
+    features_vactors = features_vactors[1:6000]
+    features_vactors.to_csv(feature_csv, mode='a', header=False, index=False)
+
+    dataset_csv = "D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod" \
+                  "\\NewDataset\\FEAR_Phrases_2.txt"
+    instancecol = 100
+    x, y = readdata(dataset_csv, 2)
+    features_vactors, model = create_docmodel(x, y, instancecol)
+    features_vactors = features_vactors[1:6000]
+    features_vactors.to_csv(feature_csv, mode='a', header=False, index=False)
+
+    dataset_csv = "D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod" \
+                  "\\NewDataset\\JOY_Phrases_3.txt"
+    instancecol = 100
+    x, y = readdata(dataset_csv, 3)
+    features_vactors, model = create_docmodel(x, y, instancecol)
+    features_vactors = features_vactors[1:6000]
+    features_vactors.to_csv(feature_csv, mode='a', header=False, index=False)
+
+    dataset_csv = "D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod" \
+                  "\\NewDataset\\LOVE_Phrases_4.txt"
+    instancecol = 100
+    x, y = readdata(dataset_csv, 4)
+    features_vactors, model = create_docmodel(x, y, instancecol)
+    features_vactors = features_vactors[1:6000]
+    features_vactors.to_csv(feature_csv, mode='a', header=False, index=False)
+
+    dataset_csv = "D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod" \
+                  "\\NewDataset\\SADNESS_Phrases_5.txt"
+    instancecol = 100
+    x, y = readdata(dataset_csv, 5)
+    features_vactors, model = create_docmodel(x, y, instancecol)
+    features_vactors = features_vactors[1:6000]
+    features_vactors.to_csv(feature_csv, mode='a', header=False, index=False)
+
     dataset_csv = "D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod" \
                   "\\NewDataset\\SURPRISE_Phrases_6.txt"
-    feature_csv = "D:\\My Source Codes\\Projects-Python\\TextBaseEmotionDetectionWithEnsembleMethod" \
-                  "\\NewDataset\\features6cl.csv"
     instancecol = 100
     x, y = readdata(dataset_csv, 6)
     features_vactors, model = create_docmodel(x, y, instancecol)
-    features_vactors = features_vactors[1:1000]
+    features_vactors = features_vactors[1:6000]
     features_vactors.to_csv(feature_csv, mode='a', header=False, index=False)
 
 
@@ -237,5 +278,5 @@ def run_model():
 
 
 if __name__ == '__main__':
-    create_model()
-    print(0)
+    classification_methods()
+    print('End')
