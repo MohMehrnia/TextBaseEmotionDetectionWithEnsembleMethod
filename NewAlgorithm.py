@@ -23,6 +23,7 @@ from gensim.models.doc2vec import Doc2Vec
 from sklearn.metrics import classification_report
 from sklearn.cluster import KMeans
 from scipy import stats
+from sklearn.metrics import roc_curve, auc
 
 
 def loaddata(filename,instancecol):
